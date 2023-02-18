@@ -1,9 +1,50 @@
 import 'package:auth_example_client/auth_example_client.dart';
+import 'package:auth_example_flutter/services/app_session_manager_service.dart';
+import 'package:auth_example_flutter/ui/common/app_colors.dart';
+import 'package:auth_example_flutter/ui/setup/setup_bottom_sheet_ui.dart';
+import 'package:auth_example_flutter/ui/setup/setup_dialog_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:serverpod_auth_email_flutter/serverpod_auth_email_flutter.dart';
 import 'package:serverpod_auth_shared_flutter/serverpod_auth_shared_flutter.dart';
 import 'package:serverpod_flutter/serverpod_flutter.dart';
 
+
+import 'package:flutter/material.dart';
+import 'package:stacked_services/stacked_services.dart';
+
+import 'app/app.locator.dart';
+import 'app/app.router.dart';
+
+void main() async {
+  setupLocator();
+  setupDialogUi();
+  setupBottomSheetUi();
+  await locator<AppSessionManagerService>().init();
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: Theme.of(context).copyWith(
+        primaryColor: kcBackgroundColor,
+        focusColor: kcPrimaryColor,
+        textTheme: Theme.of(context).textTheme.apply(
+              bodyColor: Colors.black,
+            ),
+      ),
+      initialRoute: Routes.startupView,
+      onGenerateRoute: StackedRouter().onGenerateRoute,
+      navigatorKey: StackedService.navigatorKey,
+    );
+  }
+}
+
+/*
 // Sets up a singleton client object that can be used to talk to the server from
 // anywhere in our app. The client is generated from your server code.
 // The client is set up to connect to a Serverpod running on a local server on
@@ -146,3 +187,4 @@ class _ResultDisplay extends StatelessWidget {
     );
   }
 }
+*/

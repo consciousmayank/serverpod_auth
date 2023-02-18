@@ -1,2 +1,7 @@
+article:
+  - getArticles:
+  - addArticle:
+  - updateArticle:
+  - deleteArticle:
 example:
   - hello:

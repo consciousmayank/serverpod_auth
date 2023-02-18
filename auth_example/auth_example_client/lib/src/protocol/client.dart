@@ -12,6 +12,42 @@ import 'package:serverpod_auth_client/module.dart' as _i3;
 import 'dart:io' as _i4;
 import 'protocol.dart' as _i5;
 
+class _EndpointArticle extends _i1.EndpointRef {
+  _EndpointArticle(_i1.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'article';
+
+  ///Fetch Articles from DB
+  _i2.Future<List<dynamic>> getArticles({String? title}) =>
+      caller.callServerEndpoint<List<dynamic>>(
+        'article',
+        'getArticles',
+        {'title': title},
+      );
+
+  _i2.Future<bool> addArticle({required dynamic article}) =>
+      caller.callServerEndpoint<bool>(
+        'article',
+        'addArticle',
+        {'article': article},
+      );
+
+  _i2.Future<bool> updateArticle({required dynamic article}) =>
+      caller.callServerEndpoint<bool>(
+        'article',
+        'updateArticle',
+        {'article': article},
+      );
+
+  _i2.Future<bool> deleteArticle({required int articleId}) =>
+      caller.callServerEndpoint<bool>(
+        'article',
+        'deleteArticle',
+        {'articleId': articleId},
+      );
+}
+
 class _EndpointExample extends _i1.EndpointRef {
   _EndpointExample(_i1.EndpointCaller caller) : super(caller);
 
@@ -44,16 +80,22 @@ class Client extends _i1.ServerpodClient {
           context: context,
           authenticationKeyManager: authenticationKeyManager,
         ) {
+    article = _EndpointArticle(this);
     example = _EndpointExample(this);
     modules = _Modules(this);
   }
+
+  late final _EndpointArticle article;
 
   late final _EndpointExample example;
 
   late final _Modules modules;
 
   @override
-  Map<String, _i1.EndpointRef> get endpointRefLookup => {'example': example};
+  Map<String, _i1.EndpointRef> get endpointRefLookup => {
+        'article': article,
+        'example': example,
+      };
   @override
   Map<String, _i1.ModuleEndpointCaller> get moduleLookup =>
       {'auth': modules.auth};
